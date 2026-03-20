@@ -29,21 +29,30 @@ This project is the backend for a Dungeons & Dragons virtual tabletop (VTT) appl
 -->
 ---
 
-## 📂 Project Structure
-
 dhs/  
 ├── cmd/  
 │ └── server/  
 │ └── main.go # Entry point  
+├── config/  # Configuration files (APP_ENV selects the file. Defaults to "dev")  
+│ └── dev.yaml  
+├── db/  # SQLC   
+│ ├── migrations/ # DB Migrations  
+│ ├── queries/ # DB Queries  
+│ └── sqlc.yaml # SQLC config file  
 ├── internal/  
-│ ├── config/ # Configuration  
-│ ├── handlers/ # HTTP handlers for API endpoints  
-│ ├── models/ # Database models / structs  
-│ ├── routes/ # Route definitions  
-│ ├── services/ # Business logic layer  
-│ └── repository/ # Database access layer  
+│ ├── config/ # Configuration file loader  
+│ ├── db/ # Database handler  
+│ │ ├── queries/ # SQLC out file  
+│ │ └── pgx.go/ # PGX pool initializer  
+│ ├── {domain} / # API domains  
+│ │ ├── handler # HTTP handler  
+│ │ ├── models # Database models / structs  
+│ │ ├── repo # Database access layer  
+│ │ ├── router # Route definitions  
+│ │ ├── services # Business logic layer  
+│ │ └── {domain} # Domain wiring and definition  
 ├── go.mod # Go modules file  
-└── go.sum # Go dependencies checksum
+└── go.sum # Go dependencies checksum  
 
 ---
 
@@ -101,9 +110,9 @@ go run main.go
 
 ## 👤 Author
 
-Rain Golombek
-Fullstack Developer — React • Node.js • TypeScript
-📍 Ramat Gan, Israel
-🔗 LinkedIn: [Rain](https://www.linkedin.com/in/rain-golombek-fullstack/)
+Rain Golombek  
+Fullstack Developer — React • Node.js • TypeScript  
+📍 Ramat Gan, Israel  
+🔗 LinkedIn: [Rain](https://www.linkedin.com/in/rain-golombek-fullstack/)  
 
 🔗 Portfolio: [Website](https://rainhunt.github.io/webPortfolio/)
