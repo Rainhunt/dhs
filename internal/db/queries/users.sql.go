@@ -96,6 +96,23 @@ func (q *Queries) EditUserPass(ctx context.Context, arg EditUserPassParams) (Edi
 	return i, err
 }
 
+const getAuthCredentialsByEmail = `-- name: GetAuthCredentialsByEmail :one
+SELECT id, is_admin, pass FROM users WHERE email = $1
+`
+
+type GetAuthCredentialsByEmailRow struct {
+	ID      pgtype.UUID `json:"id"`
+	IsAdmin bool        `json:"is_admin"`
+	Pass    string      `json:"pass"`
+}
+
+func (q *Queries) GetAuthCredentialsByEmail(ctx context.Context, email string) (GetAuthCredentialsByEmailRow, error) {
+	row := q.db.QueryRow(ctx, getAuthCredentialsByEmail, email)
+	var i GetAuthCredentialsByEmailRow
+	err := row.Scan(&i.ID, &i.IsAdmin, &i.Pass)
+	return i, err
+}
+
 const getUserByID = `-- name: GetUserByID :one
 SELECT id, email, username FROM users WHERE id = $1
 `

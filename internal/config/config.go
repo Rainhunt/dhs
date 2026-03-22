@@ -13,13 +13,20 @@ type Config struct {
 	Server struct {
 		Port int `yaml:"port"`
 	} `yaml:"server"`
-	Database struct {
-		Host    string `yaml:"host"`
-		Port    int    `yaml:"port"`
-		Name    string `yaml:"name"`
-		User    string `yaml:"user"`
-		PassEnv string `yaml:"passenv"`
-	} `yaml:"database"`
+	Database DatabaseConfig `yaml:"database"`
+	Jwt      struct {
+		Env    string `yaml:"env"`
+		Secret string
+	} `yaml:"jwt"`
+}
+
+type DatabaseConfig struct {
+	Host    string `yaml:"host"`
+	Port    int    `yaml:"port"`
+	Name    string `yaml:"name"`
+	User    string `yaml:"user"`
+	PassEnv string `yaml:"passenv"`
+	Pass    string
 }
 
 func Load() (*Config, error) {
@@ -39,5 +46,8 @@ func Load() (*Config, error) {
 		return nil, fmt.Errorf("failed to unmarshal YAML data in %s: %w", cfgPath, err)
 	}
 
-	return &cfg, err
+	cfg.Database.Pass = os.Getenv(cfg.Database.PassEnv)
+	cfg.Jwt.Secret = os.Getenv(cfg.Jwt.Env)
+
+	return &cfg, nil
 }

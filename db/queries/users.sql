@@ -1,6 +1,9 @@
 -- name: GetUserByID :one
 SELECT id, email, username FROM users WHERE id = $1;
 
+-- name: GetAuthCredentialsByEmail :one
+SELECT id, is_admin, pass FROM users WHERE email = $1;
+
 -- name: ListUsers :many
 SELECT id, email, username FROM users ORDER BY id
 LIMIT $1 OFFSET $2;

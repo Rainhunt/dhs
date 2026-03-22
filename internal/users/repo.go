@@ -31,6 +31,19 @@ func (r *repository) getUserByID(ctx context.Context, id pgtype.UUID) (User, err
 	}, nil
 }
 
+func (r *repository) getAuthCredentialsByEmail(ctx context.Context, email string) (authCredentials, error) {
+	row, err := r.q.GetAuthCredentialsByEmail(ctx, email)
+	if err != nil {
+		return authCredentials{}, err
+	}
+
+	return authCredentials{
+		Id:      row.ID,
+		IsAdmin: row.IsAdmin,
+		Pass:    row.Pass,
+	}, nil
+}
+
 func (r *repository) listUsers(ctx context.Context, limit, offset int32) ([]User, error) {
 	rows, err := r.q.ListUsers(ctx, queries.ListUsersParams{Limit: limit, Offset: offset})
 	if err != nil {

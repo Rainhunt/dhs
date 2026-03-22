@@ -9,3 +9,6 @@ database:
   name: dhs_db
   user: postgres
   passenv: PGPASSWORD
+
+jwt:
+  env: JWT_SECRET

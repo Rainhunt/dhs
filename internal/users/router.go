@@ -12,4 +12,5 @@ func newRouter(handler *handler) *router {
 
 func (r *router) registerRoutes(g *echo.Group) {
 	g.POST("/signup", r.handler.createUser)
+	g.POST("/login", r.handler.login)
 }

@@ -6,6 +6,7 @@ import (
 	"unicode"
 	"unicode/utf8"
 
+	"github.com/golang-jwt/jwt/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -13,6 +14,17 @@ type User struct {
 	Id       pgtype.UUID `json:"id"`
 	Email    string      `json:"email"`
 	Username string      `json:"user"`
+}
+
+type authCredentials struct {
+	Id      pgtype.UUID `json:"id"`
+	IsAdmin bool        `json:"isAdmin"`
+	Pass    string      `json:"pass"`
+}
+
+type customClaims struct {
+	IsAdmin bool `json:"isAdmin"`
+	jwt.RegisteredClaims
 }
 
 type createUserDTO struct {
@@ -57,4 +69,9 @@ func (r *createUserDTO) validate() error {
 		return errors.New("password must contain a number")
 	}
 	return nil
+}
+
+type loginDTO struct {
+	Email string `json:"email"`
+	Pass  string `json:"pass"`
 }

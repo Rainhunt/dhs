@@ -14,4 +14,5 @@ type User struct {
 	Pass      string             `json:"pass"`
 	Username  string             `json:"username"`
 	CreatedAt pgtype.Timestamptz `json:"created_at"`
+	IsAdmin   bool               `json:"is_admin"`
 }

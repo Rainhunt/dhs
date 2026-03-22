@@ -23,12 +23,12 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
-	pool, err := db.NewPgxPool(cfg)
+	pool, err := db.NewPgxPool(cfg.Database)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	userDomain := users.NewUserDomain(pool)
+	userDomain := users.NewUserDomain(pool, cfg.Jwt.Secret)
 	userDomain.Register(r)
 
 	e.Logger.Fatal(e.Start(":" + strconv.Itoa(cfg.Server.Port)))

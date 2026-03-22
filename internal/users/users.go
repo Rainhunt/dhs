@@ -9,9 +9,9 @@ type UserDomain struct {
 	router *router
 }
 
-func NewUserDomain(pool *pgxpool.Pool) *UserDomain {
+func NewUserDomain(pool *pgxpool.Pool, jwtSecret string) *UserDomain {
 	repo := newRepository(pool)
-	service := newService(repo)
+	service := newService(repo, jwtSecret)
 	handler := newHandler(service)
 	router := newRouter(handler)
 	return &UserDomain{router: router}

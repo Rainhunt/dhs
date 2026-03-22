@@ -3,17 +3,15 @@ package db
 import (
 	"context"
 	"fmt"
-	"os"
 
 	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/rainhunt/dhs/internal/config"
 )
 
-func NewPgxPool(cfg *config.Config) (*pgxpool.Pool, error) {
-	dbCfg := cfg.Database
+func NewPgxPool(dbCfg config.DatabaseConfig) (*pgxpool.Pool, error) {
 	dsn := fmt.Sprintf("postgres://%s:%s@%s:%d/%s",
 		dbCfg.User,
-		os.Getenv(dbCfg.PassEnv),
+		dbCfg.Pass,
 		dbCfg.Host,
 		dbCfg.Port,
 		dbCfg.Name)

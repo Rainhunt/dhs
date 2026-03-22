@@ -23,7 +23,7 @@ func (h *handler) createUser(c echo.Context) error {
 		return c.JSON(http.StatusBadRequest, echo.Map{"error": err.Error()})
 	}
 
-	user, err := h.service.createUser(
+	jwt, err := h.service.createUser(
 		c.Request().Context(),
 		req.Email,
 		req.Username,
@@ -33,7 +33,25 @@ func (h *handler) createUser(c echo.Context) error {
 		return c.JSON(http.StatusInternalServerError, echo.Map{"error": err.Error()})
 	}
 
-	return c.JSON(http.StatusCreated, user)
+	return c.JSON(http.StatusCreated, jwt)
+}
+
+func (h *handler) login(c echo.Context) error {
+	var req loginDTO
+	if err := c.Bind(&req); err != nil {
+		return c.JSON(http.StatusBadRequest, echo.Map{"error": "invalid request"})
+	}
+
+	jwt, err := h.service.generateJWT(
+		c.Request().Context(),
+		req.Email,
+		req.Pass,
+	)
+	if err != nil {
+		return c.JSON(http.StatusInternalServerError, echo.Map{"error": "invalid request"})
+	}
+
+	return c.JSON(http.StatusOK, jwt)
 }
 
 // func (h *handler) getUsers(c echo.Context) error {
