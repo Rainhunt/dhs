@@ -5,6 +5,7 @@ import (
 
 	"github.com/golang-jwt/jwt/v5"
 	"github.com/jackc/pgx/v5/pgtype"
+	"github.com/rainhunt/dhs/internal/config"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -45,7 +46,7 @@ func (s *service) generateJWT(ctx context.Context, email, pass string) (string, 
 	if err != nil {
 		return "", err
 	}
-	token := jwt.NewWithClaims(jwt.SigningMethodHS256, customClaims{
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, config.CustomClaims{
 		IsAdmin: authCred.IsAdmin,
 		RegisteredClaims: jwt.RegisteredClaims{
 			Subject: id.String(),

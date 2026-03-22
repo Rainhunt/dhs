@@ -2,7 +2,8 @@ package users
 
 import (
 	"github.com/jackc/pgx/v5/pgxpool"
-	"github.com/labstack/echo/v4"
+	echojwt "github.com/labstack/echo-jwt/v5"
+	"github.com/labstack/echo/v5"
 )
 
 type UserDomain struct {
@@ -17,7 +18,7 @@ func NewUserDomain(pool *pgxpool.Pool, jwtSecret string) *UserDomain {
 	return &UserDomain{router: router}
 }
 
-func (u *UserDomain) Register(parent *echo.Group) {
+func (u *UserDomain) Register(parent *echo.Group, jwtCfg echojwt.Config) {
 	g := parent.Group("/users")
-	u.router.registerRoutes(g)
+	u.router.registerRoutes(g, jwtCfg)
 }

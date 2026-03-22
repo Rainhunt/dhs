@@ -1,11 +1,12 @@
 package main
 
 import (
+	"context"
 	"log"
 	"strconv"
 
-	"github.com/labstack/echo/v4"
-	"github.com/labstack/echo/v4/middleware"
+	"github.com/labstack/echo/v5"
+	"github.com/labstack/echo/v5/middleware"
 	"github.com/rainhunt/dhs/internal/config"
 	"github.com/rainhunt/dhs/internal/db"
 	"github.com/rainhunt/dhs/internal/users"
@@ -13,11 +14,10 @@ import (
 
 func main() {
 	e := echo.New()
-	e.HideBanner = true
 	r := e.Group("")
 
 	r.Use(middleware.Recover())
-	r.Use(middleware.Logger())
+	r.Use(middleware.RequestLogger())
 
 	cfg, err := config.Load()
 	if err != nil {
@@ -27,9 +27,13 @@ func main() {
 	if err != nil {
 		log.Fatal(err)
 	}
+	jwtCfg := config.NewEchoJWTConfig(cfg.Jwt.Secret)
 
 	userDomain := users.NewUserDomain(pool, cfg.Jwt.Secret)
-	userDomain.Register(r)
+	userDomain.Register(r, jwtCfg)
 
-	e.Logger.Fatal(e.Start(":" + strconv.Itoa(cfg.Server.Port)))
+	sc := echo.StartConfig{Address: ":" + strconv.Itoa(cfg.Server.Port)}
+	if err := sc.Start(context.Background(), e); err != nil {
+		e.Logger.Error("failed to start server", "error", err)
+	}
 }

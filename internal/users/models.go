@@ -6,7 +6,6 @@ import (
 	"unicode"
 	"unicode/utf8"
 
-	"github.com/golang-jwt/jwt/v5"
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -20,11 +19,6 @@ type authCredentials struct {
 	Id      pgtype.UUID `json:"id"`
 	IsAdmin bool        `json:"isAdmin"`
 	Pass    string      `json:"pass"`
-}
-
-type customClaims struct {
-	IsAdmin bool `json:"isAdmin"`
-	jwt.RegisteredClaims
 }
 
 type createUserDTO struct {
