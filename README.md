@@ -29,30 +29,31 @@ This project is the backend for a Dungeons & Dragons virtual tabletop (VTT) appl
 -->
 ---
 
-dhs/  
-├── cmd/  
-│ └── server/  
-│ └── main.go # Entry point  
-├── config/  # Configuration files (APP_ENV selects the file. Defaults to "dev")  
-│ └── dev.yaml  
-├── db/  # SQLC   
-│ ├── migrations/ # DB Migrations  
-│ ├── queries/ # DB Queries  
-│ └── sqlc.yaml # SQLC config file  
-├── internal/  
-│ ├── config/ # Configuration file loader  
-│ ├── db/ # Database handler  
-│ │ ├── queries/ # SQLC out file  
-│ │ └── pgx.go/ # PGX pool initializer  
-│ ├── {domain} / # API domains  
-│ │ ├── handler # HTTP handler  
-│ │ ├── models # Database models / structs  
-│ │ ├── repo # Database access layer  
-│ │ ├── router # Route definitions  
-│ │ ├── services # Business logic layer  
-│ │ └── {domain} # Domain wiring and definition  
-├── go.mod # Go modules file  
-└── go.sum # Go dependencies checksum  
+dhs/\
+├── cmd/\
+│ └── server/\
+│ └── main.go # Entry point\
+├── config/  # Configuration files (APP_ENV selects the file. Defaults to "dev")\
+│ └── dev.yaml\
+├── db/  # SQLC\
+│ ├── migrations/ # DB Migrations\
+│ ├── queries/ # DB Queries\
+│ └── sqlc.yaml # SQLC config file\
+├── internal/\
+│ ├── config/ # Configuration file loader\
+│ ├── db/ # Database handler\
+│ │ ├── queries/ # SQLC out file\
+│ │ └── pgx.go # PGX pool initializer\
+│ ├── {domain} / # API domains\
+│ │ ├── handler # HTTP handler\
+│ │ ├── models # Database models / structs\
+│ │ ├── repo # Database access layer\
+│ │ ├── router # Route definitions\
+│ │ ├── services # Business logic layer\
+│ │ ├── validators # Request validator functions\
+│ │ └── {domain}.go # Domain wiring and definition\
+├── go.mod # Go modules file\
+└── go.sum # Go dependencies checksum\
 
 ---
 

@@ -55,7 +55,7 @@ func (s *service) generateJWT(ctx context.Context, email, pass string) (string, 
 	return token.SignedString([]byte(s.jwtSecret))
 }
 
-func (s *service) updateUserPass(ctx context.Context, newPass string, id pgtype.UUID) (User, error) {
+func (s *service) editUserPass(ctx context.Context, newPass string, id pgtype.UUID) (User, error) {
 	hashed, err := bcrypt.GenerateFromPassword([]byte(newPass), bcrypt.DefaultCost)
 	if err != nil {
 		return User{}, nil

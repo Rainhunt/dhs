@@ -18,7 +18,7 @@ func NewPgxPool(dbCfg config.DatabaseConfig) (*pgxpool.Pool, error) {
 
 	pool, err := pgxpool.New(context.Background(), dsn)
 	if err != nil {
-		return nil, fmt.Errorf("Failed to connect to db at postgres://%s:XXX@%s:%d/%s: %w",
+		return nil, fmt.Errorf("Failed to connect to db at postgres://%s:XXX@%s:%d/%s: %w\n",
 			dbCfg.User,
 			dbCfg.Host,
 			dbCfg.Port,
@@ -26,14 +26,14 @@ func NewPgxPool(dbCfg config.DatabaseConfig) (*pgxpool.Pool, error) {
 			err)
 	}
 	if err := pool.Ping(context.Background()); err != nil {
-		return nil, fmt.Errorf("db ping failed at postgres://%s:XXX@%s:%d/%s: %w",
+		return nil, fmt.Errorf("db ping failed at postgres://%s:XXX@%s:%d/%s: %w\n",
 			dbCfg.User,
 			dbCfg.Host,
 			dbCfg.Port,
 			dbCfg.Name,
 			err)
 	}
-	fmt.Printf("Connected to PostgreSQL at postgres://%s:XXX@%s:%d/%s",
+	fmt.Printf("Connected to PostgreSQL at postgres://%s:XXX@%s:%d/%s\n",
 		dbCfg.User,
 		dbCfg.Host,
 		dbCfg.Port,

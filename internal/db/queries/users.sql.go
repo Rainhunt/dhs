@@ -46,16 +46,16 @@ func (q *Queries) DeleteUser(ctx context.Context, id pgtype.UUID) error {
 
 const editUser = `-- name: EditUser :one
 UPDATE users SET
-email = COALESCE($2, email),
-username = COALESCE($3, username)
+email = COALESCE(NULLIF($2, ''), email),
+username = COALESCE(NULLIF($3, ''), username)
 WHERE id = $1
 RETURNING id, email, username
 `
 
 type EditUserParams struct {
 	ID       pgtype.UUID `json:"id"`
-	Email    string      `json:"email"`
-	Username string      `json:"username"`
+	Email    interface{} `json:"email"`
+	Username interface{} `json:"username"`
 }
 
 type EditUserRow struct {

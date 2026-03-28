@@ -17,5 +17,9 @@ func (r *router) registerRoutes(g *echo.Group, jwtCfg echojwt.Config) {
 	auth := g.Group("", echojwt.WithConfig(jwtCfg))
 	g.POST("/signup", r.handler.createUser)
 	g.POST("/login", r.handler.login)
-	auth.GET("/", r.handler.createUser)
+	auth.GET("/list", r.handler.listUsers)
+	auth.GET("/:id", r.handler.getUser)
+	auth.PATCH("/:id", r.handler.editUser)
+	auth.PUT("/pass/:id", r.handler.editUserPass)
+	auth.DELETE("/:id", r.handler.deleteUser)
 }

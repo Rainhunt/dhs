@@ -14,8 +14,8 @@ RETURNING id, email, username;
 
 -- name: EditUser :one
 UPDATE users SET
-email = COALESCE($2, email),
-username = COALESCE($3, username)
+email = COALESCE(NULLIF(sqlc.arg('email'), ''), email),
+username = COALESCE(NULLIF(sqlc.arg('username'), ''), username)
 WHERE id = $1
 RETURNING id, email, username;
 

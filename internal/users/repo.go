@@ -75,8 +75,8 @@ func (r *repository) createUser(ctx context.Context, email, username, pass strin
 	}, nil
 }
 
-func (r *repository) editUser(ctx context.Context, email, username string) (User, error) {
-	row, err := r.q.EditUser(ctx, queries.EditUserParams{Email: email, Username: username})
+func (r *repository) editUser(ctx context.Context, email, username string, id pgtype.UUID) (User, error) {
+	row, err := r.q.EditUser(ctx, queries.EditUserParams{ID: id, Email: email, Username: username})
 	if err != nil {
 		return User{}, err
 	}

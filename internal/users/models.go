@@ -1,11 +1,6 @@
 package users
 
 import (
-	"errors"
-	"net/mail"
-	"unicode"
-	"unicode/utf8"
-
 	"github.com/jackc/pgx/v5/pgtype"
 )
 
@@ -28,41 +23,41 @@ type createUserDTO struct {
 }
 
 func (r *createUserDTO) validate() error {
-	if _, err := mail.ParseAddress(r.Email); err != nil {
-		return errors.New("please enter a valid email")
-	}
-	if utf8.RuneCountInString(r.Username) < 3 {
-		return errors.New("username must be at least 3 characters in length")
-	}
-	if utf8.RuneCountInString(r.Username) > 16 {
-		return errors.New("username must be equal to or less than 16 characters in length")
-	}
-	var passwordHasUpper, passwordHasLower, passwordHasSymbol, passwordHasDigit bool
-	for _, p := range r.Pass {
-		switch {
-		case unicode.IsUpper(p):
-			passwordHasUpper = true
-		case unicode.IsLower(p):
-			passwordHasLower = true
-		case unicode.IsSymbol(p):
-			passwordHasSymbol = true
-		case unicode.IsDigit(p):
-			passwordHasDigit = true
-		}
-	}
-	switch {
-	case utf8.RuneCountInString(r.Pass) < 8:
-		return errors.New("password must be at least 8 characters in length")
-	case !passwordHasUpper:
-		return errors.New("password must contain an uppercase letter")
-	case !passwordHasLower:
-		return errors.New("password must contin a lowercase letter")
-	case !passwordHasSymbol:
-		return errors.New("password must contain a symbol")
-	case !passwordHasDigit:
-		return errors.New("password must contain a number")
-	}
-	return nil
+	return runValidators(
+		func() error { return validateEmail(r.Email) },
+		func() error { return validateUsername(r.Username) },
+		func() error { return validatePassword(r.Pass) },
+	)
+}
+
+type editUserDTO struct {
+	Email    string `json:"email"`
+	Username string `json:"username"`
+}
+
+func (r *editUserDTO) validate() error {
+	return runValidators(
+		func() error {
+			if r.Email == "" {
+				return nil
+			}
+			return validateEmail(r.Email)
+		},
+		func() error {
+			if r.Username == "" {
+				return nil
+			}
+			return validateUsername(r.Username)
+		},
+	)
+}
+
+type editUserPassDTO struct {
+	Pass string `json:"pass"`
+}
+
+func (r *editUserPassDTO) validate() error {
+	return validatePassword(r.Pass)
 }
 
 type loginDTO struct {

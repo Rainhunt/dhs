@@ -16,8 +16,8 @@ func main() {
 	e := echo.New()
 	r := e.Group("")
 
+	r.Use(middleware.RequestLoggerWithConfig(config.LoggerConfig))
 	r.Use(middleware.Recover())
-	r.Use(middleware.RequestLogger())
 
 	cfg, err := config.Load()
 	if err != nil {
